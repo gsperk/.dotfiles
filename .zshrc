@@ -1,10 +1,15 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Non-login interactive shells skip ~/.zprofile; see README.md.
+if ! command -v brew >/dev/null && [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # Path to your dotfiles.
 export DOTFILES=$HOME/.dotfiles
 
-# Default user - removes user from promt
+# Oh My Zsh Agnoster: hide user@host when logged in as this user locally (stock theme in ~/.oh-my-zsh).
 export DEFAULT_USER=graeme
 
 # Path to your oh-my-zsh installation.
@@ -106,3 +111,56 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# pnpm
+export PNPM_HOME="/Users/graeme/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end export 
+
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# Homebrew Claude Code does not auto-update. This lets the CLI upgrade its own cask.
+export CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1
+
+# Private startflows modules (GitHub Packages). The token stays in the gh keychain.
+# One-time, so this credential can read packages:
+#   gh auth refresh -h github.com -s read:packages
+if [[ -z ${STARTFLOWS_GH_PKGS_TOKEN:-} ]] && command -v gh >/dev/null; then
+  _startflows_gh_token="$(gh auth token 2>/dev/null)" || true
+  if [[ -n ${_startflows_gh_token:-} ]]; then
+    export STARTFLOWS_GH_PKGS_TOKEN="$_startflows_gh_token"
+  fi
+  unset _startflows_gh_token
+fi
+
+# Pretty diff for two arbitrary local files (not necessarily in a git repo).
+# See README.md — requires diff-so-fancy (Brewfile) and core.pager from fresh.sh.
+dif() {
+  if [[ $# -ne 2 ]]; then
+    echo "usage: dif <file1> <file2>" >&2
+    return 1
+  fi
+  git diff --color --no-index -- "$1" "$2" | diff-so-fancy | less --tabs=4 -RFX
+}
+
+# One tmux session per project. Name defaults to the current directory.
+#   tproj          # create or switch to a session for this folder
+#   tproj api      # explicit session name
+# Session names cannot contain "." or ":"; those become "-".
+tproj() {
+  local name="${1:-${PWD:t}}"
+  name="${name#.}"
+  name="${name//[.:]/-}"
+  if [[ -z "$name" ]]; then
+    echo "usage: tproj [session-name]" >&2
+    return 1
+  fi
+  if [[ -n "$TMUX" ]]; then
+    tmux has-session -t "=$name" 2>/dev/null || tmux new-session -d -s "$name" -c "$PWD"
+    tmux switch-client -t "=$name"
+  else
+    tmux new-session -A -s "$name" -c "$PWD"
+  fi
+}
+

@@ -1,0 +1,6 @@
+# git config --global core.attributesfile "$HOME/.dotfiles/.gitattributes_global"
+
+# Reduce noisy generated dependency diffs.
+package-lock.json -diff
+pnpm-lock.yaml -diff
+yarn.lock -diff
