@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal macOS dev setup: Homebrew (`Brewfile`), shell, git globals, tmux, and Alacritty. Run `fresh.sh` on a new machine to install dependencies and symlink configs.
+Personal macOS dev setup: Homebrew (`Brewfile`), shell, git globals, tmux, Alacritty, and personal agent instructions. Run `fresh.sh` on a new machine to install dependencies and symlink configs.
 
 ## Shell startup
 
@@ -14,6 +14,19 @@ Personal macOS dev setup: Homebrew (`Brewfile`), shell, git globals, tmux, and A
 Alacritty is configured to run `zsh -l`, so both files load. Terminals that start a non-login interactive shell only read `.zshrc`; a small fallback there runs `brew shellenv` if `brew` is not on `PATH` yet.
 
 After changing shell files, open a new tab or run `exec zsh -l`.
+
+## Coding agents
+
+`fresh.sh` symlinks one personal instruction file, `config/opencode/AGENTS.md`, to both of these:
+
+| Link | Who reads it |
+|------|----------------|
+| `~/.config/opencode/AGENTS.md` | OpenCode, on every session, then the repo `AGENTS.md` |
+| `~/.claude/CLAUDE.md` | Claude Code |
+
+Cursor uses User Rules and does not read this file. Project commands and layout stay in each repo's `AGENTS.md`.
+
+Shared skills live in `skills/<name>/SKILL.md`. `fresh.sh` links that directory to `~/.agents/skills`, which Cursor and OpenCode both load. `config/opencode/skills/` stays linked to `~/.config/opencode/skills` for a skill that should exist only in OpenCode. A repo copy at `.agents/skills/<name>/` overrides the shared skill of the same name.
 
 ## Git defaults
 
@@ -62,7 +75,7 @@ Alacritty is the terminal window. tmux runs inside it and keeps a shell session 
 
 `fresh.sh` symlinks `~/.tmux.conf` and `~/.config/alacritty/alacritty.toml`. tmux comes from the `Brewfile`. The Alacritty Homebrew cask is disabled (it fails macOS Gatekeeper), so the app is installed from the [GitHub release](https://github.com/alacritty/alacritty/releases). If macOS blocks the first open, right-click Alacritty and choose Open, or allow it under System Settings → Privacy & Security.
 
-Alacritty reloads `alacritty.toml` when you save it. Inside tmux, `Ctrl-a` then `r` reloads `.tmux.conf`.
+Alacritty reloads `alacritty.toml` when you save it. tmux reads `.tmux.conf` only when its server starts, so editing the file and opening a new Alacritty window leaves the running server on the old settings. Inside tmux, `Ctrl-a` then `r` sources `~/.tmux.conf` into that server. To start clean, run `tmux kill-server` and open a new session; the next server start loads the file on its own.
 
 ### One session per project
 

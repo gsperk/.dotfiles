@@ -1,0 +1,15 @@
+skills/engineering/grill-with-docs config/opencode/skills/grill-with-docs
+skills/engineering/research config/opencode/skills/research
+skills/engineering/prototype config/opencode/skills/prototype
+skills/engineering/improve-codebase-architecture config/opencode/skills/improve-codebase-architecture
+skills/engineering/retro config/opencode/skills/retro
+skills/productivity/writing-for-agents config/opencode/skills/writing-for-agents
+skills/productivity/handoff config/opencode/skills/handoff
+skills/engineering/implement config/opencode/skills/implement
+skills/productivity/grilling skills/grilling
+skills/productivity/grill-me skills/grill-me
+skills/engineering/domain-modeling skills/domain-modeling
+skills/engineering/tdd skills/tdd
+skills/engineering/codebase-design skills/codebase-design
+skills/engineering/diagnosing-bugs skills/diagnosing-bugs
+skills/engineering/code-review skills/code-review

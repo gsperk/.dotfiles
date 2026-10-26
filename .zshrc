@@ -123,15 +123,33 @@ export PATH="$HOME/.local/bin:$PATH"
 # Homebrew Claude Code does not auto-update. This lets the CLI upgrade its own cask.
 export CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1
 
-# Private startflows modules (GitHub Packages). The token stays in the gh keychain.
-# One-time, so this credential can read packages:
-#   gh auth refresh -h github.com -s read:packages
-if [[ -z ${STARTFLOWS_GH_PKGS_TOKEN:-} ]] && command -v gh >/dev/null; then
-  _startflows_gh_token="$(gh auth token 2>/dev/null)" || true
+# OpenCode experimental plan mode. fresh.sh symlinks this file to ~/.zshrc.
+export OPENCODE_EXPERIMENTAL_PLAN_MODE=1
+
+# Private startflows modules (GitHub Packages). PAT stays in the login keychain.
+# One-time:
+#   read -rs '?Startflows packages PAT: '; echo
+#   security add-generic-password -a "$USER" -s GH_STARTFLOWS_PKGS_READ_TOKEN -w "$REPLY"
+#   unset REPLY
+if [[ -z ${GH_STARTFLOWS_PKGS_READ_TOKEN:-} ]]; then
+  _startflows_gh_token="$(security find-generic-password -a "$USER" -s GH_STARTFLOWS_PKGS_READ_TOKEN -w 2>/dev/null)" || true
   if [[ -n ${_startflows_gh_token:-} ]]; then
-    export STARTFLOWS_GH_PKGS_TOKEN="$_startflows_gh_token"
+    export GH_STARTFLOWS_PKGS_READ_TOKEN="$_startflows_gh_token"
   fi
   unset _startflows_gh_token
+fi
+
+# OpenCode Cloudflare AI Gateway key. The secret stays in the login keychain.
+# One-time:
+#   read -rs '?Cloudflare gateway API key: '; echo
+#   security add-generic-password -a "$USER" -s CLF_AI_GW_ENG_TOKEN -w "$REPLY"
+#   unset REPLY
+if [[ -z ${CLF_AI_GW_ENG_TOKEN:-} ]]; then
+  _cf_gateway_key="$(security find-generic-password -a "$USER" -s CLF_AI_GW_ENG_TOKEN -w 2>/dev/null)" || true
+  if [[ -n ${_cf_gateway_key:-} ]]; then
+    export CLF_AI_GW_ENG_TOKEN="$_cf_gateway_key"
+  fi
+  unset _cf_gateway_key
 fi
 
 # Pretty diff for two arbitrary local files (not necessarily in a git repo).

@@ -1,0 +1,33 @@
+--- a/skills/domain-modeling/SKILL.md
++++ b/skills/domain-modeling/SKILL.md
+@@ -37,7 +37,7 @@
+ │       └── docs/adr/
+ ```
+ 
+-Create files lazily: only when you have something to write. If no `GLOSSARY.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
++Do not create `GLOSSARY.md` or `docs/adr/` while the design doc for this work is still unwritten. Hold new terms in the conversation until that doc exists. Once it exists, create `GLOSSARY.md` only for a term the docs do not define, and create `docs/adr/` only for a decision that is not part of a design doc.
+ 
+ ## During the session
+ 
+@@ -57,11 +57,11 @@
+ 
+ When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible. Which is right?"
+ 
+-### Update GLOSSARY.md inline
++### Glossary entries are pointers
+ 
+-When a term is resolved, update `GLOSSARY.md` right there. Don't batch these up: capture them as they happen. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
++Canonical definitions live in `docs/design/`. When a term is resolved and a design doc already defines it, use that definition. Do not copy it into `GLOSSARY.md`.
+ 
+-`GLOSSARY.md` should be totally devoid of implementation details. Do not treat `GLOSSARY.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
++When a design doc defines the term, a `GLOSSARY.md` entry is the term, one line, and a link to that section. Write a full definition, in the format of [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md), only when no design doc defines the term. `GLOSSARY.md` stays free of implementation detail. It is not a second spec.
+ 
+ ### Offer ADRs sparingly
+ 
+@@ -71,4 +71,6 @@
+ 2. **Surprising without context**: a future reader will wonder "why did they do it this way?"
+ 3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
+ 
++A decision that belongs to a design under `docs/design/` is recorded in that design doc, not in `docs/adr/`.
++
+ If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).

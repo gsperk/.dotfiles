@@ -1,0 +1,9 @@
+Design docs in docs/design/ are the spec. Plans in .opencode/plans/ are the build order. There is no GitHub or GitLab issue queue for this loop. The tracker is docs/agents/issue-tracker.md.
+
+Implement only the step I name, and only when I am steering the edit. The seam on that step is already confirmed. When that step is finished, set its Status line to done and leave the rest of the plan unchanged. If the step contradicts the design doc, stop.
+
+Do not run plan-from-design, implement, research, grill-with-docs, improve-codebase-architecture, or retro. Those run in OpenCode.
+
+For a refactor I am steering, use codebase-design. For a hard bug, use diagnosing-bugs. Before I ask you to commit, use code-review against the design doc I name. The fixed point is the commit this step branched from, and the diff includes uncommitted work.
+
+Do not commit, push, or open a pull request unless I ask. Do not invent a test suite in admin-portal or starters-preview.

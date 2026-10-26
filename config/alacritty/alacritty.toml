@@ -5,7 +5,7 @@
 shell = { program = "/bin/zsh", args = ["-l"] }
 
 [font]
-size = 13.0
+size = 15.0
 # Powerline glyphs for the Agnoster prompt. Family name of ~/Library/Fonts/Inconsolata for Powerline.otf
 normal = { family = "Inconsolata for Powerline" }
 

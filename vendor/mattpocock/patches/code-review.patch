@@ -1,0 +1,22 @@
+--- a/skills/code-review/SKILL.md
++++ b/skills/code-review/SKILL.md
+@@ -22,6 +22,10 @@
+ 
+ Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+ 
++When the user describes the fixed point as the commit this step branched from and does not give a ref, resolve it with `git merge-base HEAD origin/main` if `origin/main` exists, otherwise `git merge-base HEAD main`. Do not ask them to restate it.
++
++The review covers uncommitted work. Use `git diff <fixed-point>` so the index and the working tree are included. `git diff <fixed-point>...HEAD` misses an uncommitted step. A clean commit range with a dirty worktree is still a review. Fail for an empty diff only when both that command and `git status --porcelain` are empty.
++
+ ### 2. Identify the spec source
+ 
+ Look for the originating spec, in this order:
+@@ -30,6 +34,8 @@
+ 2. A path the user passed as an argument.
+ 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
+ 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
++
++In these repos the spec is the design doc the user names under `docs/design/`, plus the plan step they name under `.opencode/plans/`. Prefer that path over an issue number in a commit message. Do not ask for a GitHub issue when the user has given a design doc path.
+ 
+ ### 3. Identify the standards sources
+ 

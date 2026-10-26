@@ -1,0 +1,79 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",
+  "model": "anthropic/claude-sonnet-5-5",
+  "agents": {
+    "title": {
+      "model": "cloudflare-workers-ai/@cf/moonshotai/kimi-k2.7-code"
+    }
+  },
+  "policies": [
+    {
+      "action": "provider.use",
+      "resource": "*",
+      "effect": "deny"
+    },
+    {
+      "action": "provider.use",
+      "resource": "anthropic",
+      "effect": "allow"
+    },
+    {
+      "action": "provider.use",
+      "resource": "cloudflare-ai-gateway",
+      "effect": "allow"
+    },
+    {
+      "action": "provider.use",
+      "resource": "cloudflare-workers-ai",
+      "effect": "allow"
+    },
+    {
+      "action": "provider.use",
+      "resource": "openai",
+      "effect": "allow"
+    }
+  ],
+  "providers": {
+    "anthropic": {
+      "name": "Anthropic via Cloudflare AI Gateway",
+      "settings": {
+        "baseURL": "https://gateway.ai.cloudflare.com/v1/790e8f69c1361ace0655fb26d1f4348f/engineering/anthropic/v1",
+        "apiKey": ""
+      },
+      "headers": {
+        "cf-aig-authorization": "Bearer {env:CLF_AI_GW_ENG_TOKEN}"
+      }
+    },
+    "openai": {
+      "name": "OpenAI via Cloudflare AI Gateway",
+      "settings": {
+        "baseURL": "https://gateway.ai.cloudflare.com/v1/790e8f69c1361ace0655fb26d1f4348f/engineering/openai",
+        "apiKey": ""
+      },
+      "headers": {
+        "cf-aig-authorization": "Bearer {env:CLF_AI_GW_ENG_TOKEN}"
+      }
+    },
+    "cloudflare-ai-gateway": {
+      "name": "Cloudflare AI Gateway",
+      "settings": {
+        "baseURL": "https://gateway.ai.cloudflare.com/v1/790e8f69c1361ace0655fb26d1f4348f/engineering",
+        "apiKey": ""
+      },
+      "headers": {
+        "cf-aig-authorization": "Bearer {env:CLF_AI_GW_ENG_TOKEN}"
+      }
+    },
+    "cloudflare-workers-ai": {
+      "name": "Workers AI via Cloudflare AI Gateway",
+      "settings": {
+        "baseURL": "https://gateway.ai.cloudflare.com/v1/790e8f69c1361ace0655fb26d1f4348f/engineering/workers-ai/v1",
+        "apiKey": ""
+      },
+      "headers": {
+        "cf-aig-authorization": "Bearer {env:CLF_AI_GW_ENG_TOKEN}"
+      }
+    }
+  }
+}
