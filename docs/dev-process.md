@@ -283,7 +283,7 @@ Spec: docs/design/assets/account-images.md
 This fits one session. There is no plan. If the doc contradicts itself, stop and do not edit code. Use tdd at the seam the doc names. Run the tests, then pnpm run lint and pnpm typecheck. Do not write a plan. Do not commit.
 ```
 
-Commit only when you ask, in the usual way. `conventional-commit` writes the message. A user-facing package change in `startflows`, `admin-portal`, or `starters-preview` still gets a changeset. The plan is not a changeset.
+Commit only when you ask, in the usual way. In OpenCode, run the `commit` subagent. It loads `conventional-commit` and writes the message. A user-facing package change in `startflows`, `admin-portal`, or `starters-preview` still gets a changeset. The plan is not a changeset.
 
 ## 9. Review the diff
 

@@ -12,4 +12,4 @@ The repo `AGENTS.md` names the lint and typecheck commands. Run those.
 
 Once done, call the Skill tool with "code-review". The fixed point is the commit this step branched from. The diff includes uncommitted work.
 
-Do not commit, push, amend, or open a pull request. The user commits in a separate step. When they ask to commit, and the repo has `conventional-commit`, load that skill.
+Do not commit, push, amend, or open a pull request. The user commits in a separate step. When they ask to commit, run the `commit` subagent. Do not load `conventional-commit` in this session.

@@ -56,7 +56,7 @@ A skill that calls another by name fails when that skill is not loaded. OpenCode
 |---|---|
 | `grill-with-docs` | `grilling`, `domain-modeling` |
 | `grill-me` | `grilling` |
-| `implement` | `tdd`, `code-review` |
+| `implement` | `tdd`, `code-review`. On a commit, the `commit` subagent, which loads `conventional-commit`. |
 | `tdd` | `codebase-design`, when the shape of the interface is in question |
 | `improve-codebase-architecture` | `codebase-design`, `grilling`, `domain-modeling` |
 | `retro` | `writing-for-agents` |
@@ -77,6 +77,7 @@ A skill that calls another by name fails when that skill is not loaded. OpenCode
 | `handoff` | The note that carries a step into Cursor. Upstream writes `$TMPDIR` (else `/tmp`). Unchanged. |
 | `implement` | One plan step. Patched below. |
 | `plan-from-design` | Local. Not in the upstream repo. Body below. |
+| `conventional-commit` | Commit messages. The `commit` subagent loads it. The parent session does not. Copied from [jkappers/agent-skills](https://github.com/jkappers/agent-skills) `skills/conventional-commit` at `9fce9393c3af5c062b367bf8fd17994939257436`. Not in `paths.txt`. Cursor does not load this directory. |
 
 ### Both tools — `skills/`
 
@@ -104,7 +105,7 @@ One line, the full commit SHA. A branch name in this file will not match the nex
 
 ### `vendor/mattpocock/paths.txt`
 
-Two columns, upstream path then dotfiles path. One skill per line. End the file with a newline. `plan-from-design` is absent, so an update does not touch it. The repo `docs/agents/` files are written from this doc, so an upstream tracker skill is not on this list.
+Two columns, upstream path then dotfiles path. One skill per line. End the file with a newline. `plan-from-design` and `conventional-commit` are absent, so an update does not touch them. The repo `docs/agents/` files are written from this doc, so an upstream tracker skill is not on this list.
 
 ```text
 skills/engineering/grill-with-docs config/opencode/skills/grill-with-docs
@@ -126,7 +127,7 @@ skills/engineering/code-review skills/code-review
 
 ### `vendor/mattpocock/patches/`
 
-One unified diff per edited skill, against the upstream file at the pin. The file the agent loads is the patched copy. `plan-from-design` has no patch.
+One unified diff per edited skill, against the upstream file at the pin. The file the agent loads is the patched copy. `plan-from-design` and `conventional-commit` have no patch.
 
 - `implement.patch`
 - `domain-modeling.patch`
@@ -230,7 +231,7 @@ vendor/mattpocock/update.sh --install <tree> <sha>
 
 `--install` copies `<tree>` into the live destinations and then writes `PIN`. It does not apply patches. The first install uses this on the edited tree.
 
-After a successful copy, a destination under `skills/` or `config/opencode/skills/` that is no longer listed in `paths.txt` is removed. The script never removes `skills/release-notes`, `config/opencode/skills/plan-from-design`, or `config/opencode/skills/.gitkeep`.
+After a successful copy, a destination under `skills/` or `config/opencode/skills/` that is no longer listed in `paths.txt` is removed. The script never removes `skills/release-notes`, `config/opencode/skills/plan-from-design`, `config/opencode/skills/conventional-commit`, or `config/opencode/skills/.gitkeep`.
 
 A failure during the copy can leave a mix of old and new skill directories while `PIN` still names the previous commit. Restore those directories from git.
 
@@ -292,7 +293,7 @@ The repo `AGENTS.md` names the lint and typecheck commands. Run those.
 
 Once done, call the Skill tool with "code-review". The fixed point is the commit this step branched from. The diff includes uncommitted work.
 
-Do not commit, push, amend, or open a pull request. The user commits in a separate step. When they ask to commit, and the repo has `conventional-commit`, load that skill.
+Do not commit, push, amend, or open a pull request. The user commits in a separate step. When they ask to commit, run the `commit` subagent. Do not load `conventional-commit` in this session.
 ```
 
 ### `domain-modeling`
@@ -495,7 +496,7 @@ Do not create `GLOSSARY.md` or `docs/adr/` in this change.
 - `docs/design/**`, including canonical docs, follow-ups, archive, and evidence.
 - `config/opencode/agents/critique-design.md` and `config/opencode/agents/commit.md`.
 - Repo `skills/` trees and `scripts/install-skills.sh`.
-- The release-notes skill and the conventional-commit install.
+- The release-notes skill. `conventional-commit` stays in `config/opencode/skills/`. Do not add it to a repo `scripts/install-skills.sh`. A copy under that repo's `.agents/skills/` overrides the user skill.
 - Changeset and release-notes rules in each `AGENTS.md`.
 - The repo `## Skills` section.
 

@@ -5,7 +5,7 @@ How to work in any repo. A repo `AGENTS.md` adds that project's commands and lay
 ## Tools
 
 - Use the package manager the repo already uses. Startflows repos use `pnpm` (`packageManager` is `pnpm@…`, or `preinstall` runs `only-allow pnpm`).
-- When asked to commit, and the repo has `conventional-commit` at `.agents/skills/conventional-commit/SKILL.md`, load that skill and follow it for the message.
+- When asked to commit, run the `commit` subagent. It loads `conventional-commit` and commits the staged changes. Do not load `conventional-commit` in this session.
 
 ## Dev servers
 

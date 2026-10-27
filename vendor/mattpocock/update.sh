@@ -88,7 +88,7 @@ stage_tree() {
 
 is_kept() {
   case "$1" in
-    skills/release-notes|config/opencode/skills/plan-from-design) return 0 ;;
+    skills/release-notes|config/opencode/skills/plan-from-design|config/opencode/skills/conventional-commit) return 0 ;;
     *) return 1 ;;
   esac
 }
